@@ -40,6 +40,10 @@ export class GameRoom {
   public getWord(): string {
     return this.secretWord;
   }
+  
+  public getPlayerCount(): number {
+    return this.playerGuesses.size;
+  }
 
   public hasPlayer(playerId: string): boolean {
     return this.playerGuesses.has(playerId);
