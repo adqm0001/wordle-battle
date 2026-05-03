@@ -1,8 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import {generateCode} from './utils'
-import {GameRoom} from './GameRoom'
+import {roomsRouter} from './routes/rooms'
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || '4000', 10);
@@ -10,40 +9,7 @@ const ORIGIN = process.env.CLIENT_URL || 'http://localhost:3000';
 const app = express()
 app.use(cors({origin: ORIGIN, methods: ['GET', 'POST', 'DELETE'], credentials: true}));
 app.use(express.json());
-
-const rooms = new Map<string, GameRoom>();
-const WORDS = ['CRANE', 'AUDIO', 'LIGHT', 'STARE', 'TRUST']
-function getRandomWord(){
-  return WORDS[(Math.floor(Math.random() * WORDS.length))]; 
-}
-
-app.post('/room', (req, res) => {
-  const code: string = generateCode();
-  const word: string = getRandomWord();
-  const gameRoom = new GameRoom(code, word);
-  rooms.set(code, gameRoom);
-  res.status(201).json({code: code});
-})
-
-app.get('/room/:code', (req, res) => {
-  const code = req.params.code;
-  const room = rooms.get(code);
-  if (!room){
-    res.status(404).json({error: 'Room not found'});
-  } else {
-    res.json({code: code, playerCount: room.getPlayerCount(), status: room.status})
-  }
-})
-
-app.delete('/room/:code', (req, res) => {
-  const code = req.params.code;
-  if (!rooms.get(code)){
-    res.status(404).json({error: 'Room not found'});
-  } else {
-    rooms.delete(code);
-    res.json({success: true, code: code})
-  }
-})
+app.use('/rooms', roomsRouter);
 
 app.get('/', (req, res) => {
   res.send('World Battle server is working!')
@@ -60,9 +26,21 @@ app.get('/version', (req, res) => {
   res.json({version: '1.0.0', name: 'Wordle Battle' }
 )})
 
+app.get('/crash', (req, res) => {
+  throw new Error('test crash');
+})
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
 })
 
-export default app
+app.use((req, res) => {
+  res.status(404).json({error: `Route ${req.method} ${req.path} not found`})
+})
 
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Server error:', err.message)
+  res.status(500).json({error: 'Internal server error'})
+})
+
+export default app
