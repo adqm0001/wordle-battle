@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import {roomsRouter} from './routes/rooms'
+import {isRealWord} from './words'
 
 dotenv.config();
 const PORT = parseInt(process.env.PORT || '4000', 10);
@@ -28,6 +29,19 @@ app.get('/version', (req, res) => {
 
 app.get('/crash', (req, res) => {
   throw new Error('test crash');
+})
+
+app.post('/validate/:word', (req, res) => {
+  const word = req.params.word;
+  if (!word){
+    res.json({valid: false, reason: 'No word provided!'});
+  } else if (word.length != 5){
+    res.json({valid: false, reason: 'Not exactly 5 letters'});
+  } else if (!isRealWord(word)){
+    res.json({valid: false, reason: 'Not in the world list'});
+  } else {
+    res.json({valid: true});
+  }
 })
 
 app.listen(PORT, () => {

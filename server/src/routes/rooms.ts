@@ -1,14 +1,10 @@
 import {generateCode} from '../utils'
 import {GameRoom} from '../GameRoom'
-
+import {isRealWord, getRandomWord} from '../words'
 import { Router } from 'express'
 const router = Router()
 
 export const rooms = new Map<string, GameRoom>();
-const WORDS = ['CRANE', 'AUDIO', 'LIGHT', 'STARE', 'TRUST']
-function getRandomWord(){
-  return WORDS[(Math.floor(Math.random() * WORDS.length))]; 
-}
 
 router.post('/', (req, res) => {
   const code: string = generateCode();
@@ -22,7 +18,7 @@ router.get('/:code', (req, res) => {
   const code = req.params.code;
   const room = rooms.get(code);
   if (!room){
-    res.status(404).json({Error: 'Room not found'});
+    res.status(404).json({error: 'Room not found'});
   } else {
     res.json({code: code, playerCount: room.getPlayerCount(), status: room.status})
   }
@@ -32,10 +28,10 @@ router.delete('/:code', (req, res) => {
   const code = req.params.code;
   if (!rooms.get(code)){
     res.status(404).json({error: 'Room not found'});
-  } else {
+    return;
+  }
     rooms.delete(code);
     res.json({success: true, code: code})
-  }
 })
 
 
