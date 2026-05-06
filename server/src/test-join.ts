@@ -29,11 +29,53 @@ async function main() {
 
  socket.on('game-start', () => {
     console.log('Game started Alice');
+    socket.emit('guess', {roomCode: code, guess: 'CRANE'});
   });
 
   socket2.on('game-start', () => {
     console.log('Game started Bob');
+    socket2.emit('typing', {roomCode: code, typed: 'CGEF'});
   });
-}
+
+  socket.on('opponent-typed', (typed) => {
+    console.log(typed);
+  });
+
+  socket.on('invalid-guess', (error) => {
+    console.log(error);
+  });
+
+  socket.on('guess-result', (guessResult) => {
+    console.log(guessResult);
+  });
+
+  socket.on('opponent-guess', (opponentGuess) => {
+    console.log(opponentGuess);
+  });
+
+  socket.on('game-over', (winner) => {
+    console.log(winner);
+  });
+
+  socket2.on('opponent-typed', (typed) => {
+    console.log(typed);
+  });
+
+  socket2.on('invalid-guess', (error) => {
+    console.log(error);
+  });
+
+  socket2.on('guess-result', (guessResult) => {
+    console.log(guessResult);
+  });
+
+  socket2.on('opponent-guess', (opponentGuess) => {
+    console.log(opponentGuess);
+  });
+
+  socket2.on('game-over', (winner) => {
+    console.log(winner);
+  });
+};
 
 main();
