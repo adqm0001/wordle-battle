@@ -1,6 +1,6 @@
 import {generateCode} from '../utils'
 import {GameRoom} from '../GameRoom'
-import {isRealWord, getRandomWord} from '../words'
+import {getRandomWord} from '../words'
 import { Router } from 'express'
 const router = Router()
 

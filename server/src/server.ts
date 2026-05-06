@@ -6,6 +6,7 @@ import {isRealWord} from './words';
 dotenv.config();
 import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer } from 'http';
+import { registerSocketHandlers } from './socketHandlers'
 
 const PORT = parseInt(process.env.PORT || '4000', 10);
 const ORIGIN = process.env.CLIENT_URL || 'http://localhost:3000';
@@ -15,17 +16,7 @@ const io = new SocketServer(httpServer, {
   cors: {origin: 'http://localhost:3000', methods: ['GET', 'POST']}
 });
 
-io.on("connection", (socket: Socket) => {
- console.log(`Socket ID: ${socket.id}`); 
-
-  socket.on('ping', () => {
-    socket.emit('pong', {time: new Date().toISOString()});  
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`Socket disconnected: ${socket.id}`);
-  });
-});
+registerSocketHandlers(io);
 
 app.use(cors({origin: ORIGIN, methods: ['GET', 'POST', 'DELETE'], credentials: true}));
 app.use(express.json());

@@ -44,6 +44,18 @@ export class GameRoom {
   public getPlayerCount(): number {
     return this.playerGuesses.size;
   }
+  
+  public getOtherPlayer(excludeId: string): string | undefined{
+    for (const playerId of this.playerGuesses.keys()) {
+      if (playerId !== excludeId) {
+        return playerId;
+      }
+      return undefined;
+    }
+  }
+  public isEmpty(): boolean {
+    return this.playerGuesses.size === 0;
+  }
 
   public hasPlayer(playerId: string): boolean {
     return this.playerGuesses.has(playerId);
