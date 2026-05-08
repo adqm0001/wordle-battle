@@ -3,6 +3,7 @@ import Header from './components/Header.tsx'
 import StatusBadge from './components/StatusBadge.tsx'
 import GuessInput from './components/GuessInput.tsx'
 import { Board } from './components/Board.tsx'
+import { Keyboard } from './components/Keyboard.tsx'
 import './App.css'
 
 function App() {
@@ -28,6 +29,17 @@ function App() {
         { letter: 'E', result: 'absent' }
         ]]}
       currentGuess="HEL"/>
+    <Keyboard
+    guesses = {['CRANE']}
+    results={[[
+      { letter: 'C', result: 'absent' },
+      { letter: 'R', result: 'present' },
+      { letter: 'A', result: 'correct' },
+      { letter: 'N', result: 'absent' },
+      { letter: 'E', result: 'absent' }
+    ]]}
+    onKey={(key) => console.log(key)}
+    />
     </>
   )
 }
