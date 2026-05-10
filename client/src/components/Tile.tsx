@@ -11,12 +11,10 @@ interface TileProps {
 export function Tile({ letter, state, index}: TileProps) {
   const [flipping, setFlipping] = useState(false);
 
-  function triggerFlip() {
-    setFlipping(true)
-    setTimeout(() => setFlipping(false), 400)
-  }
-
   useEffect(() => {
+  const triggerFlip = () => { 
+    setFlipping(true) 
+    setTimeout(() => setFlipping(false) , 400)}
       if (state !== 'tbd' && state !== 'empty') triggerFlip() 
   }, [state])
   
