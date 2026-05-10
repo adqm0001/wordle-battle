@@ -6,6 +6,11 @@ import { Board } from './components/Board.tsx'
 import { Keyboard } from './components/Keyboard.tsx'
 import { OpponentBoard } from './components/OpponentBoard.tsx'
 import { validateWord } from './utils.ts'
+import type { Screen } from './types.ts'
+import { Lobby } from './screens/Lobby.tsx'
+import { Waiting } from './screens/Waiting.tsx'
+//import { Game } from './screens/Game.tsx'
+import { GameOver } from './screens/GameOver.tsx'
 import './App.css'
 
 
@@ -13,6 +18,8 @@ function App() {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [currentGuess, setCurrentGuess] = useState('');
   const [validWordMessage, setValidWordMessage] = useState('');
+  const [screen, setScreen] = useState<Screen>('lobby');
+  const [roomCode, setRoomCode] = useState('');
 
   const handleMessage = async(word: string) => {
     const info = await validateWord(word); 
@@ -43,7 +50,26 @@ function App() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [handleKey]) 
-           
+
+  function onRoomCreated(roomCode: string) {
+    setScreen('waiting');
+    setRoomCode(roomCode);
+  }
+
+  function onRoomJoined(roomCode: string) {
+    setScreen('waiting');
+    setRoomCode(roomCode);
+  }
+
+  function onPlayAgain() {
+    setScreen('lobby');
+    setRoomCode('');
+  }
+
+  if (screen === 'lobby') return <Lobby onRoomCreated={onRoomCreated} onRoomJoined={onRoomJoined} />
+  if (screen === 'waiting') return <Waiting roomCode={roomCode} />
+  //if (screen === 'game') return <Game roomCode={roomCode} />
+  if (screen === 'gameover') return <GameOver won={true} word={'CRANE'} onPlayAgain={onPlayAgain}/>
   return (
     <>
       <Header title="Wordle Battle" />
