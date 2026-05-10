@@ -14,3 +14,20 @@ text-transform: uppercase;
 .absent { background: #787c7e; color: white; border-color: #787c7e; }
 .tbd { border-color: #878a8c; }
 .empty {}
+
+@keyframes flip {
+0% { transform: rotateX(0); }
+50% { transform: rotateX(-90deg); }
+100% { transform: rotateX(0); }
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+20% { transform: translateX(-4px); }
+40% { transform: translateX(4px); }
+60% { transform: translateX(-4px); }
+80% { transform: translateX(4px); }
+}
+
+.flip { animation: flip 0.5s ease forwards; }
+.shake { animation: shake 0.4s ease; }

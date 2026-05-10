@@ -20,11 +20,16 @@ function App() {
   const [validWordMessage, setValidWordMessage] = useState('');
   const [screen, setScreen] = useState<Screen>('lobby');
   const [roomCode, setRoomCode] = useState('');
+  const [shaking, setShaking] = useState(false);
 
   const handleMessage = async(word: string) => {
     const info = await validateWord(word); 
     if (!info.valid){
       setValidWordMessage(info.reason);
+      setShaking(true);
+      setTimeout(() => {
+        setShaking(false);
+      }, 400);
       setTimeout(() => {
         setValidWordMessage('');
       }, 2000);
@@ -90,7 +95,7 @@ function App() {
         { letter: 'N', result: 'absent' },
         { letter: 'E', result: 'absent' }
         ]]}
-      currentGuess={currentGuess}/>
+      currentGuess={currentGuess} shaking={shaking}/>
       <OpponentBoard 
       results={[[
         { letter: 'C', result: 'absent' },
