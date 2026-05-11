@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
 import cors from 'cors';
 import {roomsRouter} from './routes/rooms';
 import {isRealWord} from './words';
-dotenv.config();
 import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer } from 'http';
 import { registerSocketHandlers } from './socketHandlers'
@@ -13,7 +13,7 @@ const ORIGIN = process.env.CLIENT_URL || 'http://localhost:3000';
 const app = express();
 const httpServer = createServer(app);
 const io = new SocketServer(httpServer, {
-  cors: {origin: 'http://localhost:3000', methods: ['GET', 'POST']}
+  cors: {origin: process.env.CLIENT_URL, methods: ['GET', 'POST']}
 });
 
 registerSocketHandlers(io);

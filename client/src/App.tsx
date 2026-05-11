@@ -11,6 +11,7 @@ import { Lobby } from './screens/Lobby.tsx'
 import { Waiting } from './screens/Waiting.tsx'
 //import { Game } from './screens/Game.tsx'
 import { GameOver } from './screens/GameOver.tsx'
+import { useSocket } from './hooks/useSocket.ts'
 import './App.css'
 
 
@@ -21,6 +22,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>('lobby');
   const [roomCode, setRoomCode] = useState('');
   const [shaking, setShaking] = useState(false);
+  const socket = useSocket(() => console.log('connected:', socket.current?.id));
 
   const handleMessage = async(word: string) => {
     const info = await validateWord(word); 
