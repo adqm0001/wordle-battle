@@ -35,7 +35,7 @@ export function registerSocketHandlers(io: SocketServer) {
       socket.emit('error', {error: 'Room not found'});
       return;
     }
-    socket.to(roomCode).emit('opponent-typed', typed); 
+    socket.to(roomCode).emit('opponent-typed', typed.length); 
   });
 
   socket.on('guess', ({roomCode, guess}) => {
