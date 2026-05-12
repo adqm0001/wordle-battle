@@ -52,7 +52,10 @@ export function registerSocketHandlers(io: SocketServer) {
     const guessResult = room.submitGuess(socket.id, guess);
     io.to(socket.id).emit('guess-result', guessResult);
     socket.to(roomCode).emit('opponent-guess', guessResult.map((tile) => tile.result));
-    
+    console.log(room.status);
+    console.log(room.getGuessCount(socket.id));
+    console.log('entering game-over?', room.status === 'finished' || room.getGuessCount(socket.id) === 6);
+
     if (room.status === 'finished' || room.getGuessCount(socket.id) === 6){
       if (room.status === 'finished'){
         io.to(roomCode).emit('game-over', {winner: socket.id});

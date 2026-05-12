@@ -12,6 +12,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>('lobby');
   const [roomCode, setRoomCode] = useState('');
   const [playerName, setPlayerName] = useState('');
+  const [won, setWon] = useState(false);
   const socket = useSocket();
 
   function onRoomCreated(roomCode: string, name: string) {
@@ -30,7 +31,8 @@ function App() {
     setScreen('game');
   }
 
-  function onGameOver() {
+  function onGameOver(socketWon: boolean) {
+    setWon(socketWon);
     setScreen('gameover');
   }
 
@@ -42,7 +44,7 @@ function App() {
   if (screen === 'lobby') return <Lobby onRoomCreated={onRoomCreated} onRoomJoined={onRoomJoined} />
   if (screen === 'waiting') return <Waiting roomCode={roomCode} socket={socket} playerName={playerName} onGameStart={onGameStart}/>
   if (screen === 'game') return <Game roomCode={roomCode} socket={socket} onGameOver={onGameOver} />
-  if (screen === 'gameover') return <GameOver won={true} word={'CRANE'} onPlayAgain={onPlayAgain}/>
+  if (screen === 'gameover') return <GameOver won={won} word={'CRANE'} onPlayAgain={onPlayAgain}/>
   return (
     <>
     </>

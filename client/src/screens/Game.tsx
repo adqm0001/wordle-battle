@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { type TileResult } from '../types'
 import { validateWord } from '../utils'
 import { Board } from '../components/Board.tsx'
@@ -7,7 +7,8 @@ import { OpponentBoard } from '../components/OpponentBoard.tsx'
 import { type RefObject } from 'react'
 import { type Socket } from 'socket.io-client'
 
-export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: RefObject<Socket | null>, onGameOver: () => void}){
+export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: RefObject<Socket | null>, onGameOver: (socketWon: boolean) => void}){
+  const currentGuessRef = useRef('');
   const [currentGuess, setCurrentGuess] = useState('');
   const [currentOpponentGuessLength, setCurrentOpponentGuessLength] = useState(0);
   const [guesses, setGuesses] = useState<string[]>([]);
@@ -36,13 +37,20 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
   }, [roomCode]);
 
   const handleKey = useCallback((key: string) => {
-    if (key === 'BACK') setCurrentGuess(prev => prev.slice(0, -1))
-    else if (/^[a-zA-Z]$/.test(key) && currentGuess.length < 5) setCurrentGuess(prev => prev.concat(key))
-    else if (key === 'ENTER') {
-      handleMessage(currentGuess)
-    } 
-  }, [currentGuess, handleMessage]) 
-
+    if (key === 'BACK') {
+        setCurrentGuess(prev => {
+          currentGuessRef.current = prev.slice(0, -1);
+          return currentGuessRef.current;
+        })
+      } else if (/^[a-zA-Z]$/.test(key) && currentGuess.length < 5) {
+        setCurrentGuess(prev => {
+          currentGuessRef.current = prev + key;
+          return currentGuessRef.current;
+        })
+      } else if (key === 'ENTER') {
+        handleMessage(currentGuessRef.current)
+      }
+    }, [currentGuess, handleMessage])
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'Enter') handleKey('ENTER')
@@ -57,7 +65,7 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
 
   useEffect(() => {
     socket.current?.emit('typing', { roomCode, typed: currentGuess });
-  }, [currentGuess]);
+  }, [currentGuess, roomCode, socket]);
 
   useEffect(() => {
     if (!socket.current) {
@@ -69,7 +77,7 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
         setErrorMessage("Failed to process guess result.");
         return;
       }
-      setGuesses(prev => [...prev, currentGuess]);
+      setGuesses(prev => [...prev, currentGuessRef.current]);
       setResults(prev => [...prev, guessResult]);
       setCurrentGuess('');
     });
@@ -83,7 +91,7 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
     });
 
     socket.current.on("opponent-typed", (guessLength: number) => {
-      if (!guessLength){
+      if (guessLength === null || guessLength === undefined ){
         setErrorMessage("Connection issue.");
         return;
       }
@@ -95,14 +103,15 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
     });
 
     socket.current.on ("game-over", ({winner} : {winner: string | null}) => {
+      const socketWon = winner === socket.current?.id;
       setGameOver(true);
-      onGameOver();
+      onGameOver(socketWon);
     });
 
     socket.current.on("opponent-disconnected", () => {
       setErrorMessage('Opponent disconnected.');
       setGameOver(true);
-      onGameOver();
+      onGameOver(true);
     });
 
     return () => { 
@@ -113,7 +122,7 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
       socket.current?.off('game-over')
       socket.current?.off('opponent-disconnected')
     };
-  }, [])
+  }, [onGameOver, socket])
 
   return (
     <div>
