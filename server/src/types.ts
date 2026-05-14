@@ -1,2 +1,2 @@
-export type GameStatus = 'waiting' | 'playing' | 'finished';
+export type GameStatus = 'waiting' | 'playing' | 'finished' | 'tie';
 

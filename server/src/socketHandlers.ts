@@ -52,20 +52,21 @@ export function registerSocketHandlers(io: SocketServer) {
     const guessResult = room.submitGuess(socket.id, guess);
     io.to(socket.id).emit('guess-result', guessResult);
     socket.to(roomCode).emit('opponent-guess', guessResult.map((tile) => tile.result));
-    console.log(room.status);
-    console.log(room.getGuessCount(socket.id));
-    console.log('entering game-over?', room.status === 'finished' || room.getGuessCount(socket.id) === 6);
+    
+    const playerStatus = room.getPlayerStatus(socket.id);
 
-    if (room.status === 'finished' || room.getGuessCount(socket.id) === 6){
-      if (room.status === 'finished'){
-        io.to(roomCode).emit('game-over', {winner: socket.id});
-        return;
-      } else {
-        io.to(roomCode).emit('game-over', {winner: null});
-        return;
+    if (playerStatus === 'won' || playerStatus === 'lost'){
+      if (!room.areBothDone(socket.id)){
+        io.to(socket.id).emit('spectate');
       }
     }
-});
+
+    if (room.status === 'finished'){
+      const winner = room.getWinner(socket.id);
+      io.to(roomCode).emit('game-over', {winner, word: room.getWord() });
+      return;
+    }
+  });
 
   socket.on('disconnect', () => {
     const roomCode = socket.data.roomCode;
@@ -79,7 +80,7 @@ export function registerSocketHandlers(io: SocketServer) {
     const opponentId = room.getOtherPlayer(socket.id);
 
     if (opponentId) {
-      io.to(opponentId).emit("opponent-disconnected");
+      io.to(opponentId).emit("opponent-disconnected", {word: room.getWord()});
     }
 
     if (room.isEmpty()) {
