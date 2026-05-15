@@ -1,6 +1,7 @@
 import { Server as SocketServer, Socket } from 'socket.io'
 import { rooms } from './routes/rooms'
 import {isRealWord} from './words';
+import { prisma } from './db'
 
 export function registerSocketHandlers(io: SocketServer) {
  io.on("connection", (socket: Socket) => {
@@ -38,7 +39,7 @@ export function registerSocketHandlers(io: SocketServer) {
     socket.to(roomCode).emit('opponent-typed', typed.length); 
   });
 
-  socket.on('guess', ({roomCode, guess}) => {
+  socket.on('guess', async ({roomCode, guess}) => {
     const room = rooms.get(roomCode);
     if (!room){
       socket.emit('error', {error: 'Room not found'});
@@ -63,7 +64,32 @@ export function registerSocketHandlers(io: SocketServer) {
 
     if (room.status === 'finished'){
       const winner = room.getWinner(socket.id);
-      io.to(roomCode).emit('game-over', {winner, word: room.getWord() });
+      io.to(roomCode).emit('game-over', {winner, word: room.getWord()});
+      const opponentId = room.getOtherPlayer(socket.id);
+      const opponentSocket = io.sockets.sockets.get(opponentId!);
+      await prisma.match.create({
+        data: {
+          roomCode,
+          word: room.getWord(),
+          winnerId: winner,
+          players: {
+            create: [
+              {
+                socketId: socket.id,
+                playerName: socket.data.playerName,
+                guessCount: room.getGuessCount(socket.id),
+                won: socket.id === winner, 
+              },
+              {
+                socketId: opponentSocket!.id,
+                playerName: opponentSocket!.data.playerName,
+                guessCount: room.getGuessCount(opponentSocket!.id),
+                won: opponentSocket!.id == winner,
+              }
+            ]
+          }
+        }
+      });
       return;
     }
   });
