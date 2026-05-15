@@ -1,0 +1,62 @@
+.lobby {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  padding: 40px;
+  max-width: 500px;
+}
+
+.lobby h1 {
+  font-size: 2rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.lobby p {
+  color: #e06c6c;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+
+.lobby input {
+  width: 100%;
+  padding: 10px;
+  background: var(--bg);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 5px;
+}
+
+.lobby label {
+  font-weight: bold;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.name-section, .create-room, .join-room, .leaderboard-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.name-section button, .join-room button {
+  width: 100%;
+}
+
+.lobby button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.name-section button:hover, .join-room button:hover, .leaderboard-section button:hover {
+  opacity: 0.85;
+}
