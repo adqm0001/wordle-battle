@@ -5,6 +5,7 @@ import { Lobby } from './screens/Lobby.tsx'
 import { Waiting } from './screens/Waiting.tsx'
 import { Game } from './screens/Game.tsx'
 import { GameOver } from './screens/GameOver.tsx'
+import { Leaderboard } from './screens/Leaderboard.tsx'
 import './App.css'
 
 
@@ -28,6 +29,14 @@ function App() {
     setRoomCode(roomCode);
   }
 
+  function onLeaderboard(){
+    setScreen('leaderboard');
+  }
+
+  function onLobby(){
+    setScreen('lobby');
+  }
+
   function onGameStart(){
     setScreen('game');
   }
@@ -42,8 +51,9 @@ function App() {
     setScreen('lobby');
     setRoomCode('');
   }
-
-  if (screen === 'lobby') return <Lobby onRoomCreated={onRoomCreated} onRoomJoined={onRoomJoined} />
+   
+  if (screen === 'lobby') return <Lobby onRoomCreated={onRoomCreated} onRoomJoined={onRoomJoined} onLeaderboard={onLeaderboard}/>
+  if (screen === 'leaderboard') return <Leaderboard onLobby={onLobby}/>
   if (screen === 'waiting') return <Waiting roomCode={roomCode} socket={socket} playerName={playerName} onGameStart={onGameStart}/>
   if (screen === 'game') return <Game roomCode={roomCode} socket={socket} onGameOver={onGameOver} />
   if (screen === 'gameover') return <GameOver won={won} word={word} onPlayAgain={onPlayAgain}/>

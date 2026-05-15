@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function Lobby({onRoomCreated, onRoomJoined } : {onRoomCreated: (code: string, name: string) => void , onRoomJoined: (code: string, name: string) => void}) {
+export function Lobby({onRoomCreated, onRoomJoined, onLeaderboard} : {onRoomCreated: (code: string, name: string) => void , onRoomJoined: (code: string, name: string) => void, onLeaderboard: () => void}) {
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState('');
@@ -29,6 +29,10 @@ export function Lobby({onRoomCreated, onRoomJoined } : {onRoomCreated: (code: st
     }
     return true;
   };
+  
+  function handleButton() {
+    return onLeaderboard();
+  }
  
   return (
   <>
@@ -40,6 +44,9 @@ export function Lobby({onRoomCreated, onRoomJoined } : {onRoomCreated: (code: st
   <div>
     <input value = {code} onChange={v => setCode(v.target.value)} /> 
     <button onClick={handleInput}>Join a room</button>
+  </div>
+  <div>
+    <button onClick={handleButton}>Display leaderboard</button>
   </div>
   </>
   )

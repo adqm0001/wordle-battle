@@ -3,4 +3,4 @@ export interface TileResult {
   result: 'correct' | 'present' | 'absent'
 }
 
-export type Screen = 'lobby' | 'waiting' | 'game' | 'gameover';
+export type Screen = 'leaderboard' | 'lobby' | 'waiting' | 'game' | 'gameover';

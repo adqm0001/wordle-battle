@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import cors from 'cors';
 import {roomsRouter} from './routes/rooms';
+import {leaderboardRouter} from './routes/leaderboard';
 import {isRealWord} from './words';
 import { Socket, Server as SocketServer } from 'socket.io';
 import { createServer } from 'http';
@@ -21,6 +22,7 @@ registerSocketHandlers(io);
 app.use(cors({origin: ORIGIN, methods: ['GET', 'POST', 'DELETE'], credentials: true}));
 app.use(express.json());
 app.use('/rooms', roomsRouter);
+app.use('/leaderboard', leaderboardRouter);
 
 app.get('/', (req, res) => {
   res.send('World Battle server is working!')
