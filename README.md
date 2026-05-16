@@ -4,6 +4,14 @@ A real-time 1v1 multiplayer Wordle game. Compete against a friend to guess the w
 
 **Live Demo**: https://wordle-battle-sigma.vercel.app
 
+## Screenshots
+
+![Lobby](screenshots/lobby.png)
+![Waiting](screenshots/waiting.png)
+![Game](screenshots/game.png)
+![Leaderboard](screenshots/leaderboard.png)
+![Game Over](screenshots/game-over.png)
+
 ## Features
 
 - Real-time multiplayer via Socket.io
