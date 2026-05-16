@@ -15,7 +15,6 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
   const [guesses, setGuesses] = useState<string[]>([]);
   const [results, setResults] = useState<TileResult[][]>([]);
   const [opponentGuesses, setOpponentGuesses] = useState<string[][]>([]);
-  const [gameOver, setGameOver] = useState(false);
   const [spectating, setSpectating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [validWordMessage, setValidWordMessage] = useState('');
@@ -112,13 +111,11 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
 
     socket.current.on ("game-over", ({winner, word} : {winner: string | undefined, word: string}) => {
       const socketWon = winner === undefined ? null : winner === socket.current?.id;
-      setGameOver(true);
       onGameOver(socketWon, word);
     });
 
     socket.current.on("opponent-disconnected", ({word} : {word: string}) => {
       setErrorMessage('Opponent disconnected.');
-      setGameOver(true);
       onGameOver(true, word);
     });
 
