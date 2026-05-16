@@ -1,0 +1,26 @@
+.tile {
+  width: 62px;
+  height: 62px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.correct { background: var(--correct); color: white; border-color: var(--correct); }
+.present { background: var(--present); color: white; border-color: var(--present); }
+.absent { background: var(--absent); color: white; border-color: var(--absent); }
+.tbd { border-color: var(--text-muted); }
+
+@keyframes flip {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+.flip { animation: flip 0.5s ease-in-out forwards; }
+

@@ -1,5 +1,5 @@
 import { type TileState, Tile} from './Tile.tsx'
-import styles from './Row.module.css'
+import './Row.css'
 
 interface RowProps {
   letters: string[]
@@ -9,7 +9,7 @@ interface RowProps {
 
 export function Row({letters, states, shaking}: RowProps) {
   return (
-    <div className={`${styles.row} ${shaking ? styles.shake : ''}`}>
+    <div className={`row ${shaking ? 'shake' : ''}`}>
       {letters.map((letter, i) => <Tile key={i} letter={letter} state={states[i]} index={i}/>)} 
     </div>
   )

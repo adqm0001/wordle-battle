@@ -1,4 +1,4 @@
-import styles from './Tile.module.css'
+import './Tile.css'
 import { useState, useEffect } from 'react'
 export type TileState = 'correct' | 'present' | 'absent' | 'empty' | 'tbd'
 
@@ -10,16 +10,21 @@ interface TileProps {
 
 export function Tile({ letter, state, index}: TileProps) {
   const [flipping, setFlipping] = useState(false);
+  const [displayState, setDisplayState] = useState(state);
 
   useEffect(() => {
   const triggerFlip = () => { 
-    setFlipping(true) 
-    setTimeout(() => setFlipping(false) , 400)}
-      if (state !== 'tbd' && state !== 'empty') triggerFlip() 
-  }, [state])
+  setTimeout(() => {
+    setFlipping(true)
+    setTimeout(() => setDisplayState(state), 250)
+    setTimeout(() => setFlipping(false) , 400)
+    }, index * 150)
+  }
+    if (state !== 'tbd' && state !== 'empty') triggerFlip() 
+  }, [state, index])
   
   return (
-    <div className={`${styles.tile} ${state !== 'empty' ? styles[state] : ''} ${flipping ? styles.flip : ''}`} style={flipping ? { animationDelay: `${index * 100}ms` } : {}}>
+    <div className={`tile ${displayState} ${flipping ? 'flip' : ''}`}>
       {letter}
     </div>
     )

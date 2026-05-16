@@ -1,0 +1,58 @@
+.game {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.game-boards {
+  display: flex;
+  flex-direction: row; 
+  align-items: flex-start;
+  padding: 40px;
+  gap: 40px;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.player-board, .opponent-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.guess-count, .opponent-guess-count {
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.error-msg, .valid-msg {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  background: var(--surface);
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.error-msg {
+  color: #e06c6c;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.valid-msg {
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-size: 0.9rem;
+}

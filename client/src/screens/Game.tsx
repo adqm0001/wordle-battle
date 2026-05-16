@@ -6,6 +6,7 @@ import { Keyboard } from '../components/Keyboard.tsx'
 import { OpponentBoard } from '../components/OpponentBoard.tsx'
 import { type RefObject } from 'react'
 import { type Socket } from 'socket.io-client'
+import './Game.css'
 
 export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: RefObject<Socket | null>, onGameOver: (socketWon: boolean | null, word: string) => void}){
   const currentGuessRef = useRef('');
@@ -133,21 +134,21 @@ export function Game({roomCode, socket, onGameOver}: {roomCode: string, socket: 
   }, [onGameOver, socket])
 
   return (
-    <div>
-      <Board 
-      guesses = {guesses}
-      results={results}
-      currentGuess={currentGuess} shaking={shaking}/>
-      <OpponentBoard 
-      results={opponentGuesses}
-      opponentTypingLength={currentOpponentGuessLength} guessCount = {opponentGuesses.length}/>
-    <Keyboard
-    guesses = {guesses}
-    results={results}
-    onKey={handleKey}
-    />
-    <p>{errorMessage}</p>
-    <p>{validWordMessage}</p>
+    <div className="game">
+      <div className="game-boards">
+        <div className="player-board">
+          <h2>You</h2>
+          <Board guesses={guesses} results={results} currentGuess={currentGuess} shaking={shaking}/>
+          <p className="guess-count">{`You: ${guesses.length} / 6 guesses`}</p>
+        </div>
+        <div className="opponent-board">
+          <h2>Opponent</h2>
+          <OpponentBoard results={opponentGuesses} opponentTypingLength={currentOpponentGuessLength} guessCount = {opponentGuesses.length}/>
+        </div>
+      </div>
+    <Keyboard guesses={guesses} results={results} onKey={handleKey}/>
+    {errorMessage && <p className="error-msg">{errorMessage}</p>}
+    {validWordMessage && <p className="valid-msg">{validWordMessage}</p>}
     </div>
   )
 }

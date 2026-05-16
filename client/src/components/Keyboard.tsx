@@ -1,5 +1,5 @@
 import { type TileResult } from '../types'
-import styles from './Keyboard.module.css'
+import './Keyboard.css'
 
 type LetterResult = 'correct' | 'present' | 'absent'
 function buildLetterMap(guesses: string[], results: TileResult[][]): Map<string, LetterResult> {
@@ -37,8 +37,8 @@ export function Keyboard({guesses, results, onKey}: KeyboardProps){
   return (
   <div className='keyboard'>
       {ROWS.map((row, i) => (
-        <div key={i}>
-        {row.map((letter, j) => (<button className={`${styles.key} ${styles[letterMap.get(letter) || 'unused']}`} key={j} onClick={() => onKey(letter)}>{letter}</button>))}
+        <div className="keyboard-row" key={i}>
+        {row.map((letter, j) => (<button className={`key ${letterMap.get(letter) || 'unused'}`} key={j} onClick={() => onKey(letter)}>{letter}</button>))}
         </div>
       ))}
   </div>

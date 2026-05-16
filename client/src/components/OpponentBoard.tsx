@@ -21,10 +21,8 @@ export function OpponentBoard({results, opponentTypingLength, guessCount}: Oppon
   }
   return (
   <>
-    <div className="opponent-board">
-      <Board guesses={Array(guessCount).fill("     ")} results={toTileResults(results)} currentGuess={'•'.repeat(opponentTypingLength)} shaking={false} />
-    </div>
-    <p>{`Opponent: ${guessCount} / 6 guesses`}</p>
+    <Board guesses={Array(guessCount).fill("     ")} results={toTileResults(results)} currentGuess={'•'.repeat(opponentTypingLength)} shaking={false} />
+    <p className="opponent-guess-count">{`Opponent: ${guessCount} / 6 guesses`}</p>
   </>
   )
 };

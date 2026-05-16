@@ -1,0 +1,42 @@
+.gameover {
+  display: flex;
+  padding: 40px;
+  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gameover button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.gameover button:hover {
+  opacity: 0.85;
+}
+
+.gameover h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 32px;
+}
+
+.word-reveal {
+  font-size: 20px;
+}
+
+.win { color: var(--correct); }
+.lose { color: #e06c6c; }
+.tie { color: var(--text-muted); }
+
+.word-reveal span {
+  font-weight: bold;
+}

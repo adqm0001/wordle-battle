@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import './Leaderboard.css'
 
 type LeaderboardEntry = {
   playerName: string
@@ -11,7 +12,7 @@ export function Leaderboard({onLobby} : {onLobby: () => void}){
 
   useEffect(() => {  
     async function fetchLeaderboard() {
-      const data = await fetch('http://localhost:3001/leaderboard');
+      const data = await fetch(`${import.meta.env.VITE_API_URL}/leaderboard`);
       const Leaderboard = await data.json();
       setLeaderboard(Leaderboard)
       setLoading(false)
@@ -24,19 +25,20 @@ export function Leaderboard({onLobby} : {onLobby: () => void}){
   }
 
   return(
-    <>
-    <div>
-      <p>{loading === true ? 'Loading please wait...' : ''}</p> 
+    <div className="leaderboard">
+    <h1>Leaderboard</h1>
+      {loading  ? <p className="loading">Loading...</p> : (
+        <div className="leaderboard-list">
+          {leaderboard.map((entry,index) => (
+            <div key={entry.playerName} className="leaderboard-entry">
+              <span className="rank">#{index+1}</span>
+              <span className="player-name">{entry.playerName}</span>
+              <span className="wins">{entry._count.won} wins</span>
+            </div>
+          ))}
+        </div>
+      )}
+      <button onClick={handleClick}>Back to Lobby</button>
     </div>
-    <div>
-     <h1>Leaderboard</h1>
-      {leaderboard.map((entry, index) => (
-      <p key={entry.playerName}>{index + 1}. {entry.playerName} - {entry._count.won} wins</p>
-    ))} 
-    </div>
-    <div>
-      <button onClick={handleClick}>Go back to lobby</button>
-    </div>
-    </>
   )
 }

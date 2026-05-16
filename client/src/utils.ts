@@ -1,5 +1,5 @@
 export async function validateWord(word: string) {
-  const res = await fetch(`http://localhost:3001/validate/${word}`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/validate/${word}`, {
     method: 'POST',
   })
   const data = await res.json()

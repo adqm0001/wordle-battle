@@ -9,7 +9,7 @@ export function Lobby({onRoomCreated, onRoomJoined, onLeaderboard} : {onRoomCrea
 
   async function handleClick() {
     if (!handleName()) return;
-    const res = await fetch('http://localhost:3001/rooms', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/rooms`, {
       method: 'POST',
     });
     const data = await res.json();
@@ -24,7 +24,7 @@ export function Lobby({onRoomCreated, onRoomJoined, onLeaderboard} : {onRoomCrea
       return;
     }
     if (!handleName()) return;
-    const res = await fetch(`http://localhost:3001/rooms/${code}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/rooms/${code}`, {
       method: 'GET',
     });
     const data = await res.json();

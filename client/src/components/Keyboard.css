@@ -1,0 +1,28 @@
+.key {
+  background: var(--key-bg); 
+  color: white;
+  padding: 12px 8px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 40px;
+  border: none;
+  text-transform: uppercase;
+}
+
+.key:hover {
+  opacity: 0.8;
+}
+
+.correct {
+  background: var(--correct);
+}
+
+.present {
+  background: var(--present);
+}
+
+.absent {
+  background: var(--absent);
+}
+

@@ -1,8 +1,12 @@
+import './GameOver.css'
+
 export function GameOver({won, word, onPlayAgain } : {won: boolean | null, word: string, onPlayAgain: () => void}){
   return (
-    <div>
-      { won === true ? <h1>You won the game!</h1> : won === false ? <h1>You lost the game.</h1> : <h1>The game ended in a tie.</h1>}
-      <h2>Word was: {word}</h2>
+    <div className="gameover">
+      <h1 className={won === true ? 'win' : won === false ? 'lose' : 'tie'}>
+      {won === true ? 'You won the game!' : won === false ? 'You lost the game' : 'The game ended in a tie.'}
+      </h1>
+      <p className="word-reveal">The word was: <span>{word.toUpperCase()}</span></p>
       <button onClick={onPlayAgain}>Play again</button>
     </div>
   )
