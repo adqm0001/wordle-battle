@@ -1,5 +1,5 @@
 .key {
-  background: var(--key-bg); 
+  background: var(--key-bg);
   color: white;
   padding: 12px 8px;
   border-radius: 5px;
@@ -8,21 +8,26 @@
   min-width: 40px;
   border: none;
   text-transform: uppercase;
+  box-sizing: border-box;
 }
-
 .key:hover {
   opacity: 0.8;
 }
-
 .correct {
   background: var(--correct);
 }
-
 .present {
   background: var(--present);
 }
-
 .absent {
   background: var(--absent);
 }
-
+@media (max-width: 768px) {
+  .key {
+    flex: 1;
+    min-width: 0;           
+    padding: 12px 2px;
+    font-size: clamp(0.65rem, 2.8vw, 0.85rem);
+    border-radius: 4px;
+  }
+}
