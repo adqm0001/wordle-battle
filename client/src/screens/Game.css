@@ -1,9 +1,8 @@
 .game {
- display: flex;
- flex-direction: column;
- align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .game-boards {
   display: flex;
   flex-direction: row; 
@@ -11,31 +10,26 @@
   padding: 40px;
   gap: 40px;
 }
-
 .keyboard {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
-
 .keyboard-row {
   display: flex;
   gap: 6px;
   justify-content: center;
 }
-
 .player-board, .opponent-board {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .guess-count, .opponent-guess-count {
   margin-top: 8px;
   text-transform: uppercase;
 }
-
 .error-msg, .valid-msg {
   margin-top: 8px;
   font-size: 0.9rem;
@@ -44,13 +38,11 @@
   padding: 8px 16px;
   border-radius: 4px;
 }
-
 .error-msg {
   color: #e06c6c;
   margin-top: 8px;
   font-size: 0.9rem;
 }
-
 .valid-msg {
   color: var(--text-muted);
   margin-top: 8px;
@@ -65,7 +57,25 @@
     gap: 20px;
   }
 
+  .keyboard {
+    width: 100%;
+    padding: 0 8px;
+  }
+
   .keyboard-row {
-    gap: 4px;
+    gap: 3px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .key {
+    min-width: clamp(20px, 8vw, 35px);
+    padding: 10px clamp(2px, 1vw, 6px);
+    font-size: clamp(0.6rem, 2.5vw, 0.85rem);
+  }
+
+  .opponent-board {
+    transform: scale(0.85);
+    transform-origin: top center;
   }
 }
